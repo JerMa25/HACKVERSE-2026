@@ -50,6 +50,17 @@ app.get("/health", async (_req, res) => {
   }
 });
 
+// Swagger JSON (IMPORTANT pour Vercel)
+app.get("/swagger.json", (_req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  res.send(swaggerSpec);
+});
+
+// Swagger UI seulement en local
+if (process.env.NODE_ENV !== "production") {
+  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+}
+
 // Root endpoint
 app.get("/", (_req, res) => {
   res.status(200).json({
