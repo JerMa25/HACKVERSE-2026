@@ -18,7 +18,7 @@ const swaggerOptions = {
         description: "Serveur de développement"
       },
       {
-        url: "https://api.hackverse.com",
+        url: "https://hackverse-2026.vercel.app",
         description: "Serveur de production"
       }
     ],
