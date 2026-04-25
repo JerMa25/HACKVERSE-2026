@@ -158,6 +158,35 @@ export const swaggerSpec = {
       }
     },
 
+    // ── USERS ──────────────────────────────────────────────────────
+    "/api/users": {
+      get: {
+        tags: ["Users"], summary: "Lister les utilisateurs", security: [],
+        parameters: [
+          { in: "query", name: "theme_id", schema: { type: "string" }, description: "Filtrer par thème" },
+          { in: "query", name: "location", schema: { type: "string" }, description: "Filtrer par lieu" },
+          { in: "query", name: "limit", schema: { type: "integer", default: 20 } },
+          { in: "query", name: "offset", schema: { type: "integer", default: 0 } }
+        ],
+        responses: {
+          "200": {
+            description: "Liste des utilisateurs", content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    success: { type: "boolean" },
+                    data: { type: "array", items: { "$ref": "#/components/schemas/User" } },
+                    total: { type: "integer" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
     // ── RUMORS ──────────────────────────────────────────────────────
     "/api/rumors": {
       get: {
