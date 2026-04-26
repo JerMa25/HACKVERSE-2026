@@ -60,6 +60,21 @@ export const swaggerSpec = {
           success: { type: "boolean", example: false },
           message: { type: "string" }
         }
+      },
+      Evidence: {
+        type: "object",
+        properties: {
+          id: { type: "string" },
+          type: { type: "string", enum: ["video", "audio", "text", "image"] },
+          file_url: { type: "string", example: "https://example.com/media.mp4" },
+          t_event: { type: "string", format: "date-time" },
+          t_observation: { type: "string", format: "date-time" },
+          t_upload: { type: "string", format: "date-time" },
+          hash_file: { type: "string" },
+          metadata: { type: "object" },
+          rumor_id: { type: "string" },
+          uploaded_by: { type: "string" }
+        }
       }
     }
   },
@@ -195,10 +210,7 @@ export const swaggerSpec = {
           "200": { description: "Utilisateur trouvé", content: { "application/json": { schema: { "$ref": "#/components/schemas/User" } } } },
           "404": { description: "Introuvable", content: { "application/json": { schema: { "$ref": "#/components/schemas/ErrorResponse" } } } }
         }
-      }
-    },
-
-    "/api/users/update/{id}": {
+      },
       put: {
         tags: ["Users"],
         summary: "Mettre à jour un utilisateur",
@@ -479,12 +491,16 @@ export const swaggerSpec = {
             "application/json": {
               schema: {
                 type: "object",
-                required: ["claim_id", "verdict_type", "confidence_score", "summary"],
+                required: ["claim_id", "status", "confidence_score", "moderator_id", "summary"],
                 properties: {
                   claim_id: { type: "string" },
-                  verdict_type: { type: "string" },
+                  status: { type: "string", enum: ["True", "False", "ProbablyTrue", "Contested", "Unverifiable"] },
                   confidence_score: { type: "number" },
-                  summary: { type: "string" }
+                  moderator_id: { type: "string" },
+                  is_published: { type: "boolean" },
+                  summary: { type: "string" },
+                  evidences_for: { type: "array", items: { type: "string" } },
+                  evidences_against: { type: "array", items: { type: "string" } }
                 }
               }
             }
@@ -518,12 +534,16 @@ export const swaggerSpec = {
             "application/json": {
               schema: {
                 type: "object",
-                required: ["claim_id", "evidence_type", "url", "source"],
+                required: ["type", "file_url", "t_event", "t_observation", "hash_file", "rumor_id", "uploaded_by"],
                 properties: {
-                  claim_id: { type: "string" },
-                  evidence_type: { type: "string" },
-                  url: { type: "string" },
-                  source: { type: "string" }
+                  type: { type: "string", enum: ["video", "audio", "text", "image"] },
+                  file_url: { type: "string", example: "https://example.com/media.mp4" },
+                  t_event: { type: "string", format: "date-time" },
+                  t_observation: { type: "string", format: "date-time" },
+                  hash_file: { type: "string" },
+                  metadata: { type: "object" },
+                  rumor_id: { type: "string" },
+                  uploaded_by: { type: "string" }
                 }
               }
             }
