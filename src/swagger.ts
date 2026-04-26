@@ -33,6 +33,16 @@ export const swaggerSpec = {
           createdAt: { type: "string", format: "date-time" }
         }
       },
+      Moderator: {
+        type: "object",
+        properties: {
+          id: { type: "string" },
+          name: { type: "string", example: "Modérateur Principal" },
+          email: { type: "string", format: "email", example: "admin@hackverse.com" },
+          level: { type: "string", enum: ["junior", "senior", "admin"] },
+          role: { type: "string", example: "moderator" }
+        }
+      },
       Rumor: {
         type: "object",
         properties: {
@@ -285,6 +295,76 @@ export const swaggerSpec = {
       }
     },
 
+    // ── MODERATORS ──────────────────────────────────────────────────────
+    "/api/moderators": {
+      get: {
+        tags: ["Moderators"], summary: "Lister les modérateurs", security: [],
+        responses: {
+          "200": {
+            description: "Liste des modérateurs", content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    success: { type: "boolean" },
+                    data: { type: "array", items: { "$ref": "#/components/schemas/Moderator" } },
+                    total: { type: "integer" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      post: {
+        tags: ["Moderators"], summary: "Créer un modérateur", security: [],
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                required: ["name", "email", "password", "level"],
+                properties: {
+                  name: { type: "string", example: "Modérateur Admin" },
+                  email: { type: "string", example: "admin@hackverse.com" },
+                  password: { type: "string", example: "secure123" },
+                  level: { type: "string", enum: ["junior", "senior", "admin"] }
+                }
+              }
+            }
+          }
+        },
+        responses: {
+          "201": {
+            description: "Modérateur créé", content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    success: { type: "boolean" },
+                    data: { "$ref": "#/components/schemas/Moderator" }
+                  }
+                }
+              }
+            }
+          },
+          "409": { description: "Email déjà utilisé" }
+        }
+      }
+    },
+
+    "/api/moderators/{id}": {
+      get: {
+        tags: ["Moderators"], summary: "Détail d'un modérateur", security: [],
+        parameters: [{ in: "path", name: "id", required: true, schema: { type: "string" } }],
+        responses: {
+          "200": { description: "Modérateur trouvé", content: { "application/json": { schema: { "$ref": "#/components/schemas/Moderator" } } } },
+          "404": { description: "Introuvable" }
+        }
+      }
+    },
+
     // ── RUMORS ──────────────────────────────────────────────────────
     "/api/rumors": {
       get: {
@@ -359,15 +439,6 @@ export const swaggerSpec = {
         responses: {
           "200": { description: "Rumeur trouvée", content: { "application/json": { schema: { "$ref": "#/components/schemas/Rumor" } } } },
           "404": { description: "Introuvable", content: { "application/json": { schema: { "$ref": "#/components/schemas/ErrorResponse" } } } }
-        }
-      },
-      delete: {
-        tags: ["Rumors"], summary: "Supprimer une rumeur",
-        parameters: [{ in: "path", name: "id", required: true, schema: { type: "string" } }],
-        responses: {
-          "200": { description: "Supprimée" },
-          "403": { description: "Non autorisé" },
-          "404": { description: "Introuvable" }
         }
       }
     },

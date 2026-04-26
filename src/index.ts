@@ -11,6 +11,7 @@ import themeRoutes from "./routes/theme.routes";
 import claimRoutes from "./routes/claim.routes";
 import evidenceRoutes from "./routes/evidence.routes";
 import verdictRoutes from "./routes/verdict.routes";
+import moderatorRoutes from "./routes/moderator.routes";
 import { pool } from "./config/db";
 
 const app: Express = express();
@@ -52,6 +53,7 @@ app.use("/api/themes", themeRoutes);
 app.use("/api/claims", claimRoutes);
 app.use("/api/evidence", evidenceRoutes);
 app.use("/api/verdicts", verdictRoutes);
+app.use("/api/moderators", moderatorRoutes);
 
 app.get("/health", async (_req, res) => {
   try {

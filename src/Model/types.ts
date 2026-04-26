@@ -23,6 +23,7 @@ export interface Moderator {
   email: string; // Added for login
   password_hash: string;
   level: "junior" | "senior" | "admin";
+  role: "moderator";
 }
 
 // Theme Entity
