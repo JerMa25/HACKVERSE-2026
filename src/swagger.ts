@@ -464,6 +464,78 @@ export const swaggerSpec = {
       }
     },
 
+
+    //----rumorRelations--------------------------
+    "/api/rumor-relations": {
+  post: {
+    tags: ["Rumor Relations"],
+    summary: "Lier une rumeur à une ou plusieurs rumeurs sources",
+    description: "Crée une relation BASED_ON entre une rumeur et ses rumeurs parentes",
+    requestBody: {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            required: ["rumor_id", "parent_rumor_id"],
+            properties: {
+              rumor_id: { type: "string", example: "rumor_1" },
+              parent_rumor_id: { type: "string", example: "rumor_2" },
+              relation_type: { type: "string", example: "BASED_ON" }
+            }
+          }
+        }
+      }
+    },
+    responses: {
+      "201": { description: "Relation créée avec succès" },
+      "400": { description: "Données invalides" },
+      "500": { description: "Erreur serveur" }
+    }
+  }
+},
+
+"/api/rumor-relations/{rumor_id}": {
+  get: {
+    tags: ["Rumor Relations"],
+    summary: "Récupérer toutes les relations d'une rumeur",
+    parameters: [
+      {
+        in: "path",
+        name: "rumor_id",
+        required: true,
+        schema: { type: "string" },
+        example: "rumor_1"
+      }
+    ],
+    responses: {
+      "200": { description: "Relations récupérées avec succès" },
+      "404": { description: "Rumeur introuvable" },
+      "500": { description: "Erreur serveur" }
+    }
+  }
+},
+
+"/api/rumor-relations/{id}": {
+  delete: {
+    tags: ["Rumor Relations"],
+    summary: "Supprimer une relation entre rumeurs",
+    parameters: [
+      {
+        in: "path",
+        name: "id",
+        required: true,
+        schema: { type: "string" },
+        example: "relation_1"
+      }
+    ],
+    responses: {
+      "200": { description: "Relation supprimée avec succès" },
+      "404": { description: "Relation introuvable" },
+      "500": { description: "Erreur serveur" }
+    }
+  }
+},
     // ── CLAIMS ──────────────────────────────────────────────────────
     "/api/claims": {
       post: {

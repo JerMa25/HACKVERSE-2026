@@ -45,6 +45,21 @@ CREATE TABLE IF NOT EXISTS rumors (
   created_at TIMESTAMPTZ  NOT NULL DEFAULT NOW()
 );
 
+
+CREATE TABLE IF NOT EXISTS rumor_relations (
+  id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+  rumor_id      UUID NOT NULL REFERENCES rumors(id) ON DELETE CASCADE,
+  parent_rumor_id UUID NOT NULL REFERENCES rumors(id) ON DELETE CASCADE,
+
+  relation_type VARCHAR(30) DEFAULT 'BASED_ON',
+
+  created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
+  UNIQUE (rumor_id, parent_rumor_id)
+);
+
+
 -- Claims
 CREATE TABLE IF NOT EXISTS claims (
   id       UUID PRIMARY KEY DEFAULT gen_random_uuid(),

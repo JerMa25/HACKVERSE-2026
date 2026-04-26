@@ -4,11 +4,11 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 export const pool = new Pool({
-  host: process.env.DB_HOST,
-  port: Number(process.env.DB_PORT),
-  database: process.env.DB_NAME,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
+  host: "localhost",
+  port: 5432,
+  database: "hackverse_db",
+  user: "admin",
+  password: "password",
   ssl: {
     rejectUnauthorized: false,
   },
