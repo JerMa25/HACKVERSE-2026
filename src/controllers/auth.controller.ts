@@ -148,6 +148,48 @@ export const login = async (req: Request<{}, {}, LoginRequest>, res: Response) =
 };
 
 /**
+ * Me - Retourner le profil complet de l'utilisateur connecté
+ */
+export const getMe = async (req: Request, res: Response) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
+
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        message: "Token non fourni",
+      });
+    }
+
+    const decoded = jwt.verify(token, JWT_SECRET) as { id: string; email: string };
+
+    const result = await pool.query(
+      `SELECT id, name, email, phone, role, priority, created_at
+       FROM users WHERE id = $1`,
+      [decoded.id]
+    );
+
+    if (!result.rowCount || result.rowCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Utilisateur introuvable",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      user: result.rows[0],
+    });
+  } catch (error) {
+    return res.status(401).json({
+      success: false,
+      message: "Token invalide ou expiré",
+      error: error instanceof Error ? error.message : "Unknown error",
+    });
+  }
+};
+
+/**
  * Verify Token - Vérifier un JWT token
  */
 export const verifyToken = async (req: Request, res: Response) => {

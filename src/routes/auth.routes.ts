@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { login, register, verifyToken } from "../controllers/auth.controller";
+import { login, register, verifyToken, getMe } from "../controllers/auth.controller";
 
 const router = Router();
 
@@ -186,5 +186,41 @@ router.post("/register", register);
  *         description: Erreur serveur
  */
 router.get("/verify", verifyToken);
+
+/**
+ * @swagger
+ * /api/auth/me:
+ *   get:
+ *     summary: Profil de l'utilisateur connecté (session)
+ *     description: Retourne le profil complet de l'utilisateur lié au token JWT
+ *     tags:
+ *       - Authentication
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Profil utilisateur
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     id: { type: string }
+ *                     name: { type: string }
+ *                     email: { type: string }
+ *                     phone: { type: string }
+ *                     role: { type: string }
+ *                     priority: { type: integer }
+ *                     created_at: { type: string, format: date-time }
+ *       401:
+ *         description: Token non fourni ou invalide
+ */
+router.get("/me", getMe);
 
 export default router;

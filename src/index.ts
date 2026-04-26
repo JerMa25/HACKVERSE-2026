@@ -9,6 +9,8 @@ import authRoutes from "./routes/auth.routes";
 import rumorRoutes from "./routes/rumor.routes";
 import themeRoutes from "./routes/theme.routes";
 import claimRoutes from "./routes/claim.routes";
+import evidenceRoutes from "./routes/evidence.routes";
+import verdictRoutes from "./routes/verdict.routes";
 import { pool } from "./config/db";
 
 const app: Express = express();
@@ -48,6 +50,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/rumors", rumorRoutes);
 app.use("/api/themes", themeRoutes);
 app.use("/api/claims", claimRoutes);
+app.use("/api/evidence", evidenceRoutes);
+app.use("/api/verdicts", verdictRoutes);
 
 app.get("/health", async (_req, res) => {
   try {
