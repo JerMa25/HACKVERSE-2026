@@ -148,6 +148,17 @@ export const login = async (req: Request<{}, {}, LoginRequest>, res: Response) =
 };
 
 /**
+ * Logout - Déconnecter un utilisateur/modérateur
+ * (Côté serveur, on renvoie juste un succès. La suppression du token se fait côté client.)
+ */
+export const logout = async (req: Request, res: Response) => {
+  return res.status(200).json({
+    success: true,
+    message: "Déconnexion réussie"
+  });
+};
+
+/**
  * Me - Retourner le profil complet de l'utilisateur connecté
  */
 export const getMe = async (req: Request, res: Response) => {

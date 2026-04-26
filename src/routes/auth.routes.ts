@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { login, register, verifyToken, getMe } from "../controllers/auth.controller";
+import { login, register, verifyToken, getMe, logout } from "../controllers/auth.controller";
 
 const router = Router();
 
@@ -64,6 +64,33 @@ const router = Router();
  *         description: Erreur serveur
  */
 router.post("/login", login);
+
+/**
+ * @swagger
+ * /api/auth/logout:
+ *   post:
+ *     summary: Déconnecter l'utilisateur ou le modérateur
+ *     description: Endpoint de déconnexion. Requiert de supprimer le token JWT côté client.
+ *     tags:
+ *       - Authentication
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Déconnexion réussie
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: "Déconnexion réussie"
+ */
+router.post("/logout", logout);
 
 /**
  * @swagger

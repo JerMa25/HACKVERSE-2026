@@ -183,6 +183,27 @@ export const swaggerSpec = {
       }
     },
 
+    "/api/auth/logout": {
+      post: {
+        tags: ["Auth"], summary: "Se déconnecter", security: [{ BearerAuth: [] }],
+        responses: {
+          "200": {
+            description: "Déconnexion réussie", content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    success: { type: "boolean" },
+                    message: { type: "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
     // ── USERS ──────────────────────────────────────────────────────
     "/api/users": {
       get: {
