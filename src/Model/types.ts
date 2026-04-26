@@ -117,3 +117,4 @@ export interface Verdict {
   publishedAt?: Date;
   summary: string; // Explanatory text for the public
 }
+
